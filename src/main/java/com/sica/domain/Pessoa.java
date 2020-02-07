@@ -1,7 +1,6 @@
 package com.sica.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -42,10 +41,6 @@ public class Pessoa implements Serializable {
     @NotNull
     @Column(name = "telefone", nullable = false)
     private String telefone;
-
-    @OneToOne(mappedBy = "pessoa")
-    @JsonIgnore
-    private Funcionario funcionario;
 
     @ManyToOne
     @JsonIgnoreProperties("pessoas")
@@ -110,19 +105,6 @@ public class Pessoa implements Serializable {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public Pessoa funcionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-        return this;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
     }
 
     public Familia getFamilia() {

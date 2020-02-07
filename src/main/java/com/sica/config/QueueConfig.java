@@ -15,8 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.sica.service.NotificacaoWhatsappSender;
-
 @Configuration
 public class QueueConfig {
 
@@ -40,13 +38,8 @@ public class QueueConfig {
 	}
 
 	@Bean
-	public Queue notificacaoWhatsappQueue() {
-		return new Queue("notificacaoWhatsappQueue");
-	}
-
-	@Bean
-	public NotificacaoWhatsappSender sender() {
-		return new NotificacaoWhatsappSender();
+	public Queue notificacaoEmailQueue() {
+		return new Queue("notificacaoEmailQueue");
 	}
 
 	@Profile("prod")

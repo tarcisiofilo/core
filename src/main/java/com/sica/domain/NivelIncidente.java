@@ -1,7 +1,6 @@
 package com.sica.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -39,8 +38,12 @@ public class NivelIncidente implements Serializable {
     private Boolean notificaEmail;
 
     @NotNull
-    @Column(name = "notificacao_sms_whatsapp", nullable = false)
-    private Boolean notificacaoSmsWhatsapp;
+    @Column(name = "notificacao_sms", nullable = false)
+    private Boolean notificacaoSms;
+
+    @NotNull
+    @Column(name = "notificacao_whatsapp", nullable = false)
+    private Boolean notificacaoWhatsapp;
 
     @NotNull
     @Column(name = "notificacao_dispositivo_seguranca", nullable = false)
@@ -49,10 +52,6 @@ public class NivelIncidente implements Serializable {
     @NotNull
     @Column(name = "notifica_sirene", nullable = false)
     private Boolean notificaSirene;
-
-    @OneToOne(mappedBy = "nivelIncidente")
-    @JsonIgnore
-    private Incidente incidente;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -102,17 +101,30 @@ public class NivelIncidente implements Serializable {
         this.notificaEmail = notificaEmail;
     }
 
-    public Boolean isNotificacaoSmsWhatsapp() {
-        return notificacaoSmsWhatsapp;
+    public Boolean isNotificacaoSms() {
+        return notificacaoSms;
     }
 
-    public NivelIncidente notificacaoSmsWhatsapp(Boolean notificacaoSmsWhatsapp) {
-        this.notificacaoSmsWhatsapp = notificacaoSmsWhatsapp;
+    public NivelIncidente notificacaoSms(Boolean notificacaoSms) {
+        this.notificacaoSms = notificacaoSms;
         return this;
     }
 
-    public void setNotificacaoSmsWhatsapp(Boolean notificacaoSmsWhatsapp) {
-        this.notificacaoSmsWhatsapp = notificacaoSmsWhatsapp;
+    public void setNotificacaoSms(Boolean notificacaoSms) {
+        this.notificacaoSms = notificacaoSms;
+    }
+
+    public Boolean isNotificacaoWhatsapp() {
+        return notificacaoWhatsapp;
+    }
+
+    public NivelIncidente notificacaoWhatsapp(Boolean notificacaoWhatsapp) {
+        this.notificacaoWhatsapp = notificacaoWhatsapp;
+        return this;
+    }
+
+    public void setNotificacaoWhatsapp(Boolean notificacaoWhatsapp) {
+        this.notificacaoWhatsapp = notificacaoWhatsapp;
     }
 
     public Boolean isNotificacaoDispositivoSeguranca() {
@@ -140,19 +152,6 @@ public class NivelIncidente implements Serializable {
     public void setNotificaSirene(Boolean notificaSirene) {
         this.notificaSirene = notificaSirene;
     }
-
-    public Incidente getIncidente() {
-        return incidente;
-    }
-
-    public NivelIncidente incidente(Incidente incidente) {
-        this.incidente = incidente;
-        return this;
-    }
-
-    public void setIncidente(Incidente incidente) {
-        this.incidente = incidente;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -178,7 +177,8 @@ public class NivelIncidente implements Serializable {
             ", nome='" + getNome() + "'" +
             ", notificaDNPM='" + isNotificaDNPM() + "'" +
             ", notificaEmail='" + isNotificaEmail() + "'" +
-            ", notificacaoSmsWhatsapp='" + isNotificacaoSmsWhatsapp() + "'" +
+            ", notificacaoSms='" + isNotificacaoSms() + "'" +
+            ", notificacaoWhatsapp='" + isNotificacaoWhatsapp() + "'" +
             ", notificacaoDispositivoSeguranca='" + isNotificacaoDispositivoSeguranca() + "'" +
             ", notificaSirene='" + isNotificaSirene() + "'" +
             "}";

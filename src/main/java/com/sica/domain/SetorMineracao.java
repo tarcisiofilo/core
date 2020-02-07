@@ -33,21 +33,17 @@ public class SetorMineracao implements Serializable {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Funcionario diretor;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Funcionario gerente;
-
     @OneToMany(mappedBy = "setorMineracao")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Funcionario> funcionarios = new HashSet<>();
 
-    @OneToOne(mappedBy = "setorMineracao")
-    @JsonIgnore
-    private Ativo ativo;
+    @ManyToOne
+    @JsonIgnoreProperties("setorMineracaos")
+    private Funcionario diretor;
+
+    @ManyToOne
+    @JsonIgnoreProperties("setorMineracaos")
+    private Funcionario gerente;
 
     @ManyToOne
     @JsonIgnoreProperties("setorMineracaos")
@@ -75,32 +71,6 @@ public class SetorMineracao implements Serializable {
         this.nome = nome;
     }
 
-    public Funcionario getDiretor() {
-        return diretor;
-    }
-
-    public SetorMineracao diretor(Funcionario funcionario) {
-        this.diretor = funcionario;
-        return this;
-    }
-
-    public void setDiretor(Funcionario funcionario) {
-        this.diretor = funcionario;
-    }
-
-    public Funcionario getGerente() {
-        return gerente;
-    }
-
-    public SetorMineracao gerente(Funcionario funcionario) {
-        this.gerente = funcionario;
-        return this;
-    }
-
-    public void setGerente(Funcionario funcionario) {
-        this.gerente = funcionario;
-    }
-
     public Set<Funcionario> getFuncionarios() {
         return funcionarios;
     }
@@ -126,17 +96,30 @@ public class SetorMineracao implements Serializable {
         this.funcionarios = funcionarios;
     }
 
-    public Ativo getAtivo() {
-        return ativo;
+    public Funcionario getDiretor() {
+        return diretor;
     }
 
-    public SetorMineracao ativo(Ativo ativo) {
-        this.ativo = ativo;
+    public SetorMineracao diretor(Funcionario funcionario) {
+        this.diretor = funcionario;
         return this;
     }
 
-    public void setAtivo(Ativo ativo) {
-        this.ativo = ativo;
+    public void setDiretor(Funcionario funcionario) {
+        this.diretor = funcionario;
+    }
+
+    public Funcionario getGerente() {
+        return gerente;
+    }
+
+    public SetorMineracao gerente(Funcionario funcionario) {
+        this.gerente = funcionario;
+        return this;
+    }
+
+    public void setGerente(Funcionario funcionario) {
+        this.gerente = funcionario;
     }
 
     public MinaOperacao getMinaOperacao() {

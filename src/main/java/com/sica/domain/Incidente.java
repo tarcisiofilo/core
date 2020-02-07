@@ -1,7 +1,7 @@
 package com.sica.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -39,20 +39,23 @@ public class Incidente implements Serializable {
     @Column(name = "origem", nullable = false)
     private OrigemIncidente origem;
 
+    @NotNull
+    @Column(name = "mensagem", nullable = false)
+    private String mensagem;
+
     @OneToOne
     @JoinColumn(unique = true)
     private MedicaoInstrumento medicaoInstrumento;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    @JsonIgnoreProperties("incidentes")
     private NivelIncidente nivelIncidente;
 
-    @OneToMany(mappedBy = "incidente")
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Notificacao> notificacaos = new HashSet<>();
-
-    @OneToMany(mappedBy = "incidente")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "incidente_ativo",
+               joinColumns = @JoinColumn(name = "incidente_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "ativo_id", referencedColumnName = "id"))
     private Set<Ativo> ativos = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -90,6 +93,19 @@ public class Incidente implements Serializable {
         this.origem = origem;
     }
 
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public Incidente mensagem(String mensagem) {
+        this.mensagem = mensagem;
+        return this;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
     public MedicaoInstrumento getMedicaoInstrumento() {
         return medicaoInstrumento;
     }
@@ -116,31 +132,6 @@ public class Incidente implements Serializable {
         this.nivelIncidente = nivelIncidente;
     }
 
-    public Set<Notificacao> getNotificacaos() {
-        return notificacaos;
-    }
-
-    public Incidente notificacaos(Set<Notificacao> notificacaos) {
-        this.notificacaos = notificacaos;
-        return this;
-    }
-
-    public Incidente addNotificacao(Notificacao notificacao) {
-        this.notificacaos.add(notificacao);
-        notificacao.setIncidente(this);
-        return this;
-    }
-
-    public Incidente removeNotificacao(Notificacao notificacao) {
-        this.notificacaos.remove(notificacao);
-        notificacao.setIncidente(null);
-        return this;
-    }
-
-    public void setNotificacaos(Set<Notificacao> notificacaos) {
-        this.notificacaos = notificacaos;
-    }
-
     public Set<Ativo> getAtivos() {
         return ativos;
     }
@@ -152,13 +143,13 @@ public class Incidente implements Serializable {
 
     public Incidente addAtivo(Ativo ativo) {
         this.ativos.add(ativo);
-        ativo.setIncidente(this);
+        ativo.getIncidentes().add(this);
         return this;
     }
 
     public Incidente removeAtivo(Ativo ativo) {
         this.ativos.remove(ativo);
-        ativo.setIncidente(null);
+        ativo.getIncidentes().remove(this);
         return this;
     }
 
@@ -189,6 +180,7 @@ public class Incidente implements Serializable {
             "id=" + getId() +
             ", identificacao='" + getIdentificacao() + "'" +
             ", origem='" + getOrigem() + "'" +
+            ", mensagem='" + getMensagem() + "'" +
             "}";
     }
 }

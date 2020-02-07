@@ -35,10 +35,6 @@ public class MinaOperacao implements Serializable {
     private String nome;
 
     @NotNull
-    @Column(name = "segmento", nullable = false)
-    private String segmento;
-
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_operacao", nullable = false)
     private TipoOperacao tipoOperacao;
@@ -67,19 +63,6 @@ public class MinaOperacao implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getSegmento() {
-        return segmento;
-    }
-
-    public MinaOperacao segmento(String segmento) {
-        this.segmento = segmento;
-        return this;
-    }
-
-    public void setSegmento(String segmento) {
-        this.segmento = segmento;
     }
 
     public TipoOperacao getTipoOperacao() {
@@ -142,7 +125,6 @@ public class MinaOperacao implements Serializable {
         return "MinaOperacao{" +
             "id=" + getId() +
             ", nome='" + getNome() + "'" +
-            ", segmento='" + getSegmento() + "'" +
             ", tipoOperacao='" + getTipoOperacao() + "'" +
             "}";
     }

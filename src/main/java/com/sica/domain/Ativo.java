@@ -2,7 +2,6 @@ package com.sica.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -30,16 +29,8 @@ public class Ativo implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "id_tipo_ativo", nullable = false)
-    private Long idTipoAtivo;
-
-    @NotNull
-    @Column(name = "tipo_ativo", nullable = false)
-    private String tipoAtivo;
-
-    @NotNull
-    @Column(name = "periodicidade_dias_manutencao", nullable = false)
-    private Long periodicidadeDiasManutencao;
+    @Column(name = "nome", nullable = false)
+    private String nome;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -49,9 +40,10 @@ public class Ativo implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AreaSusceptivel> areaSusceptivels = new HashSet<>();
 
-    @ManyToOne
-    @JsonIgnoreProperties("ativos")
-    private Incidente incidente;
+    @ManyToMany(mappedBy = "ativos")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
+    private Set<Incidente> incidentes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -62,43 +54,17 @@ public class Ativo implements Serializable {
         this.id = id;
     }
 
-    public Long getIdTipoAtivo() {
-        return idTipoAtivo;
+    public String getNome() {
+        return nome;
     }
 
-    public Ativo idTipoAtivo(Long idTipoAtivo) {
-        this.idTipoAtivo = idTipoAtivo;
+    public Ativo nome(String nome) {
+        this.nome = nome;
         return this;
     }
 
-    public void setIdTipoAtivo(Long idTipoAtivo) {
-        this.idTipoAtivo = idTipoAtivo;
-    }
-
-    public String getTipoAtivo() {
-        return tipoAtivo;
-    }
-
-    public Ativo tipoAtivo(String tipoAtivo) {
-        this.tipoAtivo = tipoAtivo;
-        return this;
-    }
-
-    public void setTipoAtivo(String tipoAtivo) {
-        this.tipoAtivo = tipoAtivo;
-    }
-
-    public Long getPeriodicidadeDiasManutencao() {
-        return periodicidadeDiasManutencao;
-    }
-
-    public Ativo periodicidadeDiasManutencao(Long periodicidadeDiasManutencao) {
-        this.periodicidadeDiasManutencao = periodicidadeDiasManutencao;
-        return this;
-    }
-
-    public void setPeriodicidadeDiasManutencao(Long periodicidadeDiasManutencao) {
-        this.periodicidadeDiasManutencao = periodicidadeDiasManutencao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public SetorMineracao getSetorMineracao() {
@@ -139,17 +105,29 @@ public class Ativo implements Serializable {
         this.areaSusceptivels = areaSusceptivels;
     }
 
-    public Incidente getIncidente() {
-        return incidente;
+    public Set<Incidente> getIncidentes() {
+        return incidentes;
     }
 
-    public Ativo incidente(Incidente incidente) {
-        this.incidente = incidente;
+    public Ativo incidentes(Set<Incidente> incidentes) {
+        this.incidentes = incidentes;
         return this;
     }
 
-    public void setIncidente(Incidente incidente) {
-        this.incidente = incidente;
+    public Ativo addIncidente(Incidente incidente) {
+        this.incidentes.add(incidente);
+        incidente.getAtivos().add(this);
+        return this;
+    }
+
+    public Ativo removeIncidente(Incidente incidente) {
+        this.incidentes.remove(incidente);
+        incidente.getAtivos().remove(this);
+        return this;
+    }
+
+    public void setIncidentes(Set<Incidente> incidentes) {
+        this.incidentes = incidentes;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -173,9 +151,7 @@ public class Ativo implements Serializable {
     public String toString() {
         return "Ativo{" +
             "id=" + getId() +
-            ", idTipoAtivo=" + getIdTipoAtivo() +
-            ", tipoAtivo='" + getTipoAtivo() + "'" +
-            ", periodicidadeDiasManutencao=" + getPeriodicidadeDiasManutencao() +
+            ", nome='" + getNome() + "'" +
             "}";
     }
 }

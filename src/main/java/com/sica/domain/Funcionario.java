@@ -34,13 +34,13 @@ public class Funcionario implements Serializable {
     @Column(name = "id_dispositivo_monitoramento", nullable = false)
     private Long idDispositivoMonitoramento;
 
-    @ManyToOne
-    @JsonIgnoreProperties("funcionarios")
-    private SetorMineracao setorMineracao;
-
     @OneToOne
     @JoinColumn(unique = true)
     private Pessoa pessoa;
+
+    @ManyToOne
+    @JsonIgnoreProperties("funcionarios")
+    private SetorMineracao setorMineracao;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -77,19 +77,6 @@ public class Funcionario implements Serializable {
         this.idDispositivoMonitoramento = idDispositivoMonitoramento;
     }
 
-    public SetorMineracao getSetorMineracao() {
-        return setorMineracao;
-    }
-
-    public Funcionario setorMineracao(SetorMineracao setorMineracao) {
-        this.setorMineracao = setorMineracao;
-        return this;
-    }
-
-    public void setSetorMineracao(SetorMineracao setorMineracao) {
-        this.setorMineracao = setorMineracao;
-    }
-
     public Pessoa getPessoa() {
         return pessoa;
     }
@@ -101,6 +88,19 @@ public class Funcionario implements Serializable {
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
+    }
+
+    public SetorMineracao getSetorMineracao() {
+        return setorMineracao;
+    }
+
+    public Funcionario setorMineracao(SetorMineracao setorMineracao) {
+        this.setorMineracao = setorMineracao;
+        return this;
+    }
+
+    public void setSetorMineracao(SetorMineracao setorMineracao) {
+        this.setorMineracao = setorMineracao;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
