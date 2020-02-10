@@ -38,6 +38,11 @@ public class QueueConfig {
 	}
 
 	@Bean
+	public Queue inclusaoInstrumentoMonitoramentoQueue() {
+		return new Queue("inclusaoInstrumentoMonitoramentoQueue");
+	}
+
+	@Bean
 	public Queue notificacaoEmailQueue() {
 		return new Queue("notificacaoEmailQueue");
 	}
